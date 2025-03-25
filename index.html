@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Juho Heiska – Akkutohtori & Faktoihin pohjautuva politiikka</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <!-- Fontti: Montserrat tai vastaava -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,14 +11,14 @@
 
   <style>
     :root {
-      --main-bg: #fdfdfd;        /* päätausta */
+      --main-bg: #fdfdfd;        /* tausta */
       --primary-text: #2f2f2f;   /* perus tekstiväri */
       --accent-green: #00a97f;   /* vihreä korostus */
-      --dark-tone: #464453;      /* tumma sävy */
+      --dark-tone: #464453;      /* tumma sävy, esim. footer */
       --nav-bg: #2f2f2f;         /* navigaatiopalkin tausta */
       --nav-text: #ffffff;       /* navigaation teksti */
       --hero-text: #ffffff;      /* heron pääteksti */
-      --overlay-bg: rgba(0,0,0,0.4); /* hero-kuvan tummennus */
+      --overlay-bg: rgba(0,0,0,0.2); /* hero-kuvan tummennus (kevennetty) */
       --btn-bg: transparent;     /* nappien tausta hero-alueella */
       --btn-border: #ffffff;     /* nappien reunan väri */
       --footer-bg: #464453;      /* footerin tausta */
@@ -77,16 +76,30 @@
       opacity: 0.8;
     }
 
-    /* Hero-osa kuvalla */
+    /* Hero-osa karusellina */
     .hero {
       position: relative;
       width: 100%;
-      height: 80vh;
-      background: url("https://via.placeholder.com/1920x1080?text=Taustakuva+energiasta") no-repeat center center/cover;
+      height: 70vh;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--hero-text);
+    }
+    .slide {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 0.8s ease;
+      opacity: 0;
+    }
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
     }
     .hero-overlay {
       position: absolute;
@@ -95,27 +108,31 @@
       right: 0;
       bottom: 0;
       background-color: var(--overlay-bg);
+      z-index: 2;
     }
     .hero-content {
       position: relative;
-      z-index: 2; /* Ylikirjoittaa overlayn */
+      z-index: 3; /* Ylikirjoittaa overlayn */
       text-align: center;
       max-width: 800px;
-      padding: 0 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      color: #fff;
     }
     .hero-content h1 {
-      font-size: 3rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
       font-weight: 700;
     }
     .hero-content p {
       font-size: 1.2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
     .hero-buttons {
       display: flex;
       gap: 1rem;
       justify-content: center;
+      margin-bottom: 1rem;
     }
     .hero-buttons a {
       display: inline-block;
@@ -132,11 +149,34 @@
       background: var(--btn-border);
       color: var(--nav-bg);
     }
+    /* Karusellin nuolipainikkeet */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.3);
+      color: #000;
+      border: none;
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 4;
+      border-radius: 4px;
+    }
+    .carousel-btn:hover {
+      background: rgba(255,255,255,0.7);
+    }
+    .carousel-btn.prev {
+      left: 1rem;
+    }
+    .carousel-btn.next {
+      right: 1rem;
+    }
 
-    /* Esittelyosiot */
+    /* Intro-osio (suomeksi) */
     .intro-section {
       max-width: 1100px;
-      margin: 3rem auto;
+      margin: 2rem auto;
       padding: 0 1rem;
       text-align: center;
     }
@@ -162,10 +202,10 @@
       font-weight: 700;
     }
 
-    /* Blogi / Latest Insights */
+    /* Blogiosio (suomeksi) */
     .blog-section {
       max-width: 1100px;
-      margin: 3rem auto;
+      margin: 2rem auto;
       padding: 0 1rem;
     }
     .blog-section h2 {
@@ -253,7 +293,7 @@
 
     @media (max-width: 768px) {
       .hero-content h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
       .hero-content p {
         font-size: 1rem;
@@ -262,8 +302,44 @@
         grid-template-columns: 1fr;
       }
     }
-
   </style>
+
+  <script>
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.slide');
+      if (index >= slides.length) {
+        currentSlide = 0;
+      }
+      if (index < 0) {
+        currentSlide = slides.length - 1;
+      }
+      // Piilotetaan kaikki
+      slides.forEach((slide) => {
+        slide.classList.remove('active');
+      });
+      // Näytetään valittu
+      slides[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+      currentSlide++;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide--;
+      showSlide(currentSlide);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      showSlide(currentSlide);
+
+      document.querySelector('.carousel-btn.next').addEventListener('click', nextSlide);
+      document.querySelector('.carousel-btn.prev').addEventListener('click', prevSlide);
+    });
+  </script>
 </head>
 <body>
 
@@ -272,93 +348,104 @@
     <a href="#" class="logo">Juho Heiska</a>
     <nav>
       <ul>
-        <li><a href="#">About Juho</a></li>
-        <li><a href="#">Research & Development</a></li>
-        <li><a href="#">Policy Positions</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Interactive Tools</a></li>
+        <li><a href="#">Tietoa Juhosta</a></li>
+        <li><a href="#">Tutkimus & Kehitys</a></li>
+        <li><a href="#">Poliittiset linjat</a></li>
+        <li><a href="#">Blogi</a></li>
+        <li><a href="#">Ota yhteyttä</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Hero-osa taustakuvalla + tekstillä -->
+  <!-- Hero-osa karuselli -->
   <section class="hero">
+    <!-- Karuselli: voit lisätä itse useita kuvia (slide1, slide2, ...) -->
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva1');"></div>
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva2');"></div>
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva3');"></div>
+
+    <button class="carousel-btn prev">&#9664;</button>
+    <button class="carousel-btn next">&#9654;</button>
+
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1>Advocating <span class="highlight">Economic Responsibility</span></h1>
-      <p>Combining <span class="highlight">engineering expertise</span> with a commitment to sustainable solutions and entrepreneurship.</p>
+      <h1>Kestävän talouden <span class="highlight">puolesta</span></h1>
+      <p>Yhdistän tekniikan asiantuntemuksen <span class="highlight">järkeviin ratkaisuihin</span> – tavoitteena 
+         toimiva ja vastuullinen tulevaisuus yrittäjyyden, ympäristön sekä talouspolitiikan saralla.</p>
       <div class="hero-buttons">
-        <a href="#">Learn More</a>
-        <a href="#">Get Involved</a>
+        <a href="#">Lue lisää</a>
+        <a href="#">Liity mukaan</a>
       </div>
     </div>
   </section>
 
-  <!-- Intro: Akkutohtori & Faktoihin pohjautuva politiikka -->
+  <!-- Intro-osio: Akkutohtori & faktaperustainen politiikka -->
   <section class="intro-section">
-    <h2>Meet Juho Heiska – “Akkutohtori” & Policy Advocate</h2>
-    <p>Juho Heiska is a passionate advocate for <span class="highlight">sustainable technology</span>, combining his engineering know-how 
-       with a focus on community empowerment. His mission is to foster economic responsibility while 
-       promoting environmental stewardship through innovative solutions.</p>
+    <h2>Hei, olen Juho Heiska – “Akkutohtori” ja politiikan tekijä</h2>
+    <p>Olen intohimoinen <span class="highlight">teknologian ja kestävien ratkaisujen</span> puolestapuhuja. Haluan 
+       yhdistää tutkimus- ja kehitystyön konkreettisiin toimiin, joilla vahvistetaan kuntien elinvoimaa 
+       ja huolehditaan tulevista sukupolvista.</p>
 
     <div class="intro-grid" style="margin-top: 3rem;">
       <div class="intro-item">
-        <h3>100+ Projects</h3>
-        <p>Successfully led over a hundred projects focusing on battery technologies, decarbonization, and 
-           local entrepreneurship.</p>
+        <h3>Yli 100 projektia</h3>
+        <p>Olen vetänyt hankkeita, jotka keskittyvät akkuteknologiaan, vähähiilisyyteen ja paikallisen 
+           yrittäjyyden tukemiseen.</p>
       </div>
       <div class="intro-item">
-        <h3>20 Years</h3>
-        <p>Experience in research, technology development and public policy – bridging the gap between 
-           lab results and real-world impact.</p>
+        <h3>20 vuoden kokemus</h3>
+        <p>Kokemusta tutkimuksesta, tuotekehityksestä ja julkisen päätöksenteon yhteistyöstä – 
+           laboratorioista käytäntöön.</p>
       </div>
       <div class="intro-item">
-        <h3>5000+ People</h3>
-        <p>Initiatives have positively impacted thousands of citizens by generating job opportunities 
-           and supporting local industry growth.</p>
+        <h3>Vaikutus tuhansille</h3>
+        <p>Työni on luonut työpaikkoja, tukenut paikallista teollisuutta ja tuonut konkreettisia 
+           ratkaisuja päästöjen vähentämiseen.</p>
       </div>
       <div class="intro-item">
-        <h3>50 Awards</h3>
-        <p>Recognized for contributions to sustainable practices, technology innovation, and policy advocacy.</p>
+        <h3>Useita tunnustuksia</h3>
+        <p>Olen saanut tunnustusta innovaatioiden, vastuullisen talousajattelun ja 
+           kestävyysratkaisujen edistämisestä.</p>
       </div>
     </div>
   </section>
 
-  <!-- Blog / “Latest Insights” -osio -->
+  <!-- Blogiosio (suomeksi) -->
   <section class="blog-section">
-    <h2>Latest Insights</h2>
-    <p style="text-align:center;">Explore our recent posts on sustainability and economic responsibility.</p>
+    <h2>Viimeisimmät kirjoitukset</h2>
+    <p style="text-align:center;">Tutustu ajatuksiini ja ideoihini kestävän kehityksen ja talousvastuun saralla.</p>
 
     <div class="blog-grid">
       <!-- Kortti 1 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200?text=Battery+Technology" alt="Blogikuva 1">
+        <img src="https://via.placeholder.com/400x200?text=Akkuteknologia" alt="Blogikuva 1">
         <div class="content">
-          <h4>The Crucial Role of Battery Technology in Transportation</h4>
-          <p>Battery innovation is rapidly evolving, offering exciting possibilities for sustainable mobility.</p>
-          <div class="date">March 10, 2025</div>
+          <h4>Akkuteknologian merkitys liikenteessä</h4>
+          <p>Akkukehitys etenee hurjaa vauhtia ja avaa uusia mahdollisuuksia sähköiseen 
+             liikenteeseen.</p>
+          <div class="date">10. maaliskuuta 2025</div>
         </div>
       </div>
 
       <!-- Kortti 2 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200?text=Local+Vitality" alt="Blogikuva 2">
+        <img src="https://via.placeholder.com/400x200?text=Paikallistalous" alt="Blogikuva 2">
         <div class="content">
-          <h4>Local Vitality & Economic Responsibility in the Green Energy Transition</h4>
-          <p>Communities play a vital role in developing green energy projects, fostering job creation 
-             and local growth.</p>
-          <div class="date">February 28, 2025</div>
+          <h4>Paikallistalouden vahvistaminen vihreässä siirtymässä</h4>
+          <p>Kunnat voivat olla avainasemassa uusien työpaikkojen synnyssä sekä kestävän 
+             energia-alan kehityksessä.</p>
+          <div class="date">28. helmikuuta 2025</div>
         </div>
       </div>
 
       <!-- Kortti 3 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200?text=Policy+Advocacy" alt="Blogikuva 3">
+        <img src="https://via.placeholder.com/400x200?text=Politiikka" alt="Blogikuva 3">
         <div class="content">
-          <h4>Policy Advocacy for Sustainable Battery Tech</h4>
-          <p>Effective policies are essential to drive innovation and the widespread adoption of 
-             battery technology.</p>
-          <div class="date">February 14, 2025</div>
+          <h4>Politiikka tukemaan akkuteollisuutta</h4>
+          <p>Tehokkaat ja järkevät päätökset ovat edellytys kestävälle teknologialle ja sen 
+             laajalle käyttöönotolle.</p>
+          <div class="date">14. helmikuuta 2025</div>
         </div>
       </div>
     </div>
@@ -370,12 +457,12 @@
 
       <div class="footer-column">
         <h5>Juho Heiska</h5>
-        <p>Akkutohtori & Political Advocate. Pioneering economic responsibility, entrepreneurial freedom, 
-           and sustainable innovation.</p>
+        <p>Akkutohtori & päättäjä, joka ajaa kestävää taloutta, yrittäjyyden vapautta 
+           ja ilmastoviisasta tulevaisuutta.</p>
       </div>
 
       <div class="footer-column">
-        <h5>Links</h5>
+        <h5>Linkit</h5>
         <ul>
           <li><a href="https://x.com/Juuhonber" target="_blank">Twitter (X)</a></li>
           <li><a href="https://www.linkedin.com/in/juho-heiska-347216b6/" target="_blank">LinkedIn</a></li>
@@ -385,29 +472,29 @@
       </div>
 
       <div class="footer-column">
-        <h5>Site Navigation</h5>
+        <h5>Sivustolla</h5>
         <ul>
-          <li><a href="#">About Juho</a></li>
-          <li><a href="#">Research & Dev</a></li>
-          <li><a href="#">Policy Positions</a></li>
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Interactive Tools</a></li>
+          <li><a href="#">Tietoa Juhosta</a></li>
+          <li><a href="#">Tutkimus & Kehitys</a></li>
+          <li><a href="#">Poliittiset linjat</a></li>
+          <li><a href="#">Blogi</a></li>
+          <li><a href="#">Ota yhteyttä</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h5>Contact</h5>
+        <h5>Yhteys</h5>
         <ul>
-          <li><a href="#">Send a Message</a></li>
-          <li><a href="#">Media Inquiries</a></li>
-          <li><a href="#">Support Juho</a></li>
+          <li><a href="#">Lähetä viesti</a></li>
+          <li><a href="#">Mediakyselyt</a></li>
+          <li><a href="#">Tue kampanjaa</a></li>
         </ul>
       </div>
 
     </div>
 
     <div class="footer-bottom">
-      © 2025 Juho Heiska – All rights reserved. | Terms | Privacy
+      © 2025 Juho Heiska – Kaikki oikeudet pidätetään | Ehdot | Tietosuoja
     </div>
   </footer>
 
