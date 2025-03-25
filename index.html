@@ -11,18 +11,35 @@
 
   <style>
     :root {
-      --main-bg: #fdfdfd;        /* tausta */
-      --primary-text: #2f2f2f;   /* perus tekstiväri */
-      --accent-green: #00a97f;   /* vihreä korostus */
-      --dark-tone: #464453;      /* tumma sävy, esim. footer */
-      --nav-bg: #2f2f2f;         /* navigaatiopalkin tausta */
-      --nav-text: #ffffff;       /* navigaation teksti */
-      --hero-text: #ffffff;      /* heron pääteksti */
-      --overlay-bg: rgba(0,0,0,0.2); /* hero-kuvan tummennus (kevennetty) */
-      --btn-bg: transparent;     /* nappien tausta hero-alueella */
-      --btn-border: #ffffff;     /* nappien reunan väri */
-      --footer-bg: #464453;      /* footerin tausta */
-      --footer-text: #fdfdfd;    /* footerin teksti */
+      /* Palettisi: */
+      --white:      #fdfdfd;  /* White */
+      --chili-red:  #E3170A;  /* Chili Red */
+      --indigo:     #340068;  /* Persian Indigo */
+      --blue:       #4472CA;  /* Celtic Blue */
+      --jet:        #2f2f2f;  /* Jet */
+
+      /* Sivun perusvärit: */
+      --main-bg:    var(--white);
+      --primary-text: var(--jet);  /* Tumma teksti Jet */
+      --highlight-color: var(--chili-red);
+
+      /* Navigaatiopalkki = Persian Indigo */
+      --nav-bg:    var(--indigo);
+      --nav-text:  var(--white);
+
+      /* Hero-tekstin väri */
+      --hero-text: var(--white);
+
+      /* Läpinäkyvä overlay hero-kuville */
+      --overlay-bg: rgba(0,0,0,0.2);
+
+      /* Nappien värit hero-alueella */
+      --btn-bg: transparent;
+      --btn-border: var(--white);
+
+      /* Footerin tausta + teksti -> Jet + White, esim. tai toisinpäin */
+      --footer-bg: var(--jet);
+      --footer-text: var(--white);
     }
 
     * {
@@ -38,9 +55,9 @@
       line-height: 1.6;
     }
 
-    /* Korostus-luokka vihreän tekstin esilletuomiseen */
+    /* Korostus-luokka: käytetään chili-red */
     .highlight {
-      color: var(--accent-green);
+      color: var(--highlight-color);
       font-weight: 700;
     }
 
@@ -76,16 +93,12 @@
       opacity: 0.8;
     }
 
-    /* Hero-osa karusellina */
+    /* Hero-osa: automaattinen karuselli, jokaisella sivulla oma teksti */
     .hero {
       position: relative;
       width: 100%;
       height: 70vh;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--hero-text);
     }
     .slide {
       position: absolute;
@@ -101,45 +114,46 @@
       opacity: 1;
       z-index: 1;
     }
-    .hero-overlay {
+    .slide-overlay {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
       background-color: var(--overlay-bg);
-      z-index: 2;
+      z-index: 1;
     }
-    .hero-content {
+    .slide-content {
       position: relative;
-      z-index: 3; /* Ylikirjoittaa overlayn */
+      z-index: 2;
       text-align: center;
       max-width: 800px;
-      padding: 1rem;
-      margin-top: 1rem;
-      color: #fff;
+      margin: 0 auto;
+      color: var(--hero-text);
+      padding: 2rem 1rem;
+      top: 50%;
+      transform: translateY(-50%);
     }
-    .hero-content h1 {
-      font-size: 2.5rem;
+    .slide-content h1 {
+      font-size: 2.3rem;
       margin-bottom: 1rem;
       font-weight: 700;
     }
-    .hero-content p {
+    .slide-content p {
       font-size: 1.2rem;
       margin-bottom: 1.5rem;
+      line-height: 1.4;
     }
     .hero-buttons {
-      display: flex;
+      display: inline-flex;
       gap: 1rem;
-      justify-content: center;
-      margin-bottom: 1rem;
     }
     .hero-buttons a {
       display: inline-block;
       padding: 0.75rem 1.5rem;
       border: 2px solid var(--btn-border);
       background: var(--btn-bg);
-      color: #fff;
+      color: var(--white);
       text-decoration: none;
       font-weight: 600;
       border-radius: 4px;
@@ -149,7 +163,7 @@
       background: var(--btn-border);
       color: var(--nav-bg);
     }
-    /* Karusellin nuolipainikkeet */
+
     .carousel-btn {
       position: absolute;
       top: 50%;
@@ -173,7 +187,7 @@
       right: 1rem;
     }
 
-    /* Intro-osio (suomeksi) */
+    /* Intro-osio */
     .intro-section {
       max-width: 1100px;
       margin: 2rem auto;
@@ -202,7 +216,7 @@
       font-weight: 700;
     }
 
-    /* Blogiosio (suomeksi) */
+    /* Blogiosio */
     .blog-section {
       max-width: 1100px;
       margin: 2rem auto;
@@ -292,10 +306,10 @@
     }
 
     @media (max-width: 768px) {
-      .hero-content h1 {
+      .slide-content h1 {
         font-size: 1.8rem;
       }
-      .hero-content p {
+      .slide-content p {
         font-size: 1rem;
       }
       .intro-grid, .blog-grid {
@@ -306,6 +320,7 @@
 
   <script>
     let currentSlide = 0;
+    let slideInterval;
 
     function showSlide(index) {
       const slides = document.querySelectorAll('.slide');
@@ -315,11 +330,9 @@
       if (index < 0) {
         currentSlide = slides.length - 1;
       }
-      // Piilotetaan kaikki
       slides.forEach((slide) => {
         slide.classList.remove('active');
       });
-      // Näytetään valittu
       slides[currentSlide].classList.add('active');
     }
 
@@ -333,11 +346,34 @@
       showSlide(currentSlide);
     }
 
+    function startAutoPlay() {
+      slideInterval = setInterval(() => {
+        nextSlide();
+      }, 4000); // Vaihda kuvaa 4 sek välein
+    }
+
+    function stopAutoPlay() {
+      clearInterval(slideInterval);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       showSlide(currentSlide);
+      startAutoPlay();
 
-      document.querySelector('.carousel-btn.next').addEventListener('click', nextSlide);
-      document.querySelector('.carousel-btn.prev').addEventListener('click', prevSlide);
+      const nextBtn = document.querySelector('.carousel-btn.next');
+      const prevBtn = document.querySelector('.carousel-btn.prev');
+
+      nextBtn.addEventListener('click', () => {
+        stopAutoPlay();
+        nextSlide();
+        startAutoPlay();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        stopAutoPlay();
+        prevSlide();
+        startAutoPlay();
+      });
     });
   </script>
 </head>
@@ -357,29 +393,53 @@
     </nav>
   </header>
 
-  <!-- Hero-osa karuselli -->
+  <!-- Hero-osa: automaattinen karuselli, jokaisella sivulla oma teksti -->
   <section class="hero">
-    <!-- Karuselli: voit lisätä itse useita kuvia (slide1, slide2, ...) -->
-    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva1');"></div>
-    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva2');"></div>
-    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Karuselli+Kuva3');"></div>
-
-    <button class="carousel-btn prev">&#9664;</button>
-    <button class="carousel-btn next">&#9654;</button>
-
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>Kestävän talouden <span class="highlight">puolesta</span></h1>
-      <p>Yhdistän tekniikan asiantuntemuksen <span class="highlight">järkeviin ratkaisuihin</span> – tavoitteena 
-         toimiva ja vastuullinen tulevaisuus yrittäjyyden, ympäristön sekä talouspolitiikan saralla.</p>
-      <div class="hero-buttons">
-        <a href="#">Lue lisää</a>
-        <a href="#">Liity mukaan</a>
+    <!-- Slide 1 -->
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Kuva+1');">
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <h1>Ratkaisuja ilmaston <span class="highlight">ja</span> talouden puolesta</h1>
+        <p>Pienydinvoima, tuulivoima ja järkevä energiapolitiikka – tehdään yhdessä kestävämpi Seinäjoki!</p>
+        <div class="hero-buttons">
+          <a href="#">Lue lisää</a>
+          <a href="#">Liity mukaan</a>
+        </div>
       </div>
     </div>
+
+    <!-- Slide 2 -->
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Kuva+2');">
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <h1>Akkutohtorin <span class="highlight">visio</span></h1>
+        <p>Akku- ja sähköteknologia luo uusia mahdollisuuksia paikallisille yrityksille ja vihreälle siirtymälle.</p>
+        <div class="hero-buttons">
+          <a href="#">Lue blogi</a>
+          <a href="#">Katso projektit</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide" style="background-image:url('https://via.placeholder.com/1920x1080?text=Kuva+3');">
+      <div class="slide-overlay"></div>
+      <div class="slide-content">
+        <h1>Taloutta <span class="highlight">faktoilla</span></h1>
+        <p>Ei fiilistelyä, vaan tehokasta menokuria ilman veronkorotusten automaatiota.</p>
+        <div class="hero-buttons">
+          <a href="#">Tutustu ohjelmaan</a>
+          <a href="#">Ota yhteyttä</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Karusellin ohjauspainikkeet -->
+    <button class="carousel-btn prev">&#9664;</button>
+    <button class="carousel-btn next">&#9654;</button>
   </section>
 
-  <!-- Intro-osio: Akkutohtori & faktaperustainen politiikka -->
+  <!-- Intro-osio -->
   <section class="intro-section">
     <h2>Hei, olen Juho Heiska – “Akkutohtori” ja politiikan tekijä</h2>
     <p>Olen intohimoinen <span class="highlight">teknologian ja kestävien ratkaisujen</span> puolestapuhuja. Haluan 
@@ -410,7 +470,7 @@
     </div>
   </section>
 
-  <!-- Blogiosio (suomeksi) -->
+  <!-- Blogiosio -->
   <section class="blog-section">
     <h2>Viimeisimmät kirjoitukset</h2>
     <p style="text-align:center;">Tutustu ajatuksiini ja ideoihini kestävän kehityksen ja talousvastuun saralla.</p>
