@@ -7,21 +7,8 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <a href="index.html" class="logo">Juho Heiska</a>
-    <nav>
-      <ul>
-        <li><a href="index.html">Etusivu</a></li>
-        <li><a href="tietoajuhosta.html">Tietoa Juhosta</a></li>
-        <li><a href="tutkimus.html">Tutkimus & Kehitys</a></li>
-        <li><a href="poliittisetlinjat.html">Poliittiset linjat</a></li>
-        <li><a href="blogi.html">Blogi</a></li>
-        <li><a href="liitymukaan.html">Liity mukaan</a></li>
-        <li><a href="projektit.html" style="opacity:0.7;">Projektit</a></li>
-        <li><a href="ota-yhteytta.html">Ota yhteyttä</a></li>
-      </ul>
-    </nav>
-  </header>
+<div id="site-header"></div>
+
 
   <main style="max-width:1100px;margin:2rem auto;padding:0 1rem;">
     <h1>Projektit</h1>
@@ -45,24 +32,17 @@
     </section>
   </main>
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-column">
-        <h5>Juho Heiska</h5>
-        <p>Tulevaisuuden energiaratkaisujen rakentaja</p>
-      </div>
-      <div class="footer-column">
-        <h5>Sivulinkit</h5>
-        <ul>
-          <li><a href="index.html">Etusivu</a></li>
-          <li><a href="blogi.html">Blogi</a></li>
-          <li><a href="liitymukaan.html">Liity mukaan</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 Juho Heiska
-    </div>
-  </footer>
+<div id="site-footer"></div>
+
+<script>
+  fetch('header.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('site-header').innerHTML = html);
+
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('site-footer').innerHTML = html);
+</script>
+
 </body>
 </html>
