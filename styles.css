@@ -1,4 +1,4 @@
-  <style>
+
     :root {
       /* Palettisi: */
       --white:      #fdfdfd;  /* White */
@@ -305,4 +305,3 @@
         grid-template-columns: 1fr;
       }
     }
-  </style>
