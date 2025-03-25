@@ -10,19 +10,8 @@
 <body>
   <!-- Voit halutessasi kopioida navigaation suoraan index.html:stä, 
        tai tehdä \"kevyemmän\" version. -->
-  <header>
-    <a href="index.html" class="logo">Juho Heiska</a>
-    <nav>
-      <ul>
-        <!-- Laita linkkejä sekä index.html:ään että muihin alasivuihin, 
-             jotta käyttäjä pääsee sivulta sivulle: -->
-        <li><a href="index.html">Etusivu</a></li>
-        <li><a href="tietoajuhosta.html" style="opacity:0.5;">Tietoa Juhosta</a></li>
-        <li><a href="tutkimus.html">Tutkimus & Kehitys</a></li>
-        <!-- jne. -->
-      </ul>
-    </nav>
-  </header>
+<div id="site-header"></div>
+
 
   <main>
     <h1>Tietoa Juhosta</h1>
@@ -33,8 +22,17 @@
     <!-- Lisää sisältöä oman mielesi mukaan -->
   </main>
 
-  <footer>
-    <p>© 2025 Juho Heiska</p>
-  </footer>
+<div id="site-footer"></div>
+
+<script>
+  fetch('header.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('site-header').innerHTML = html);
+
+  fetch('footer.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('site-footer').innerHTML = html);
+</script>
+
 </body>
 </html>
