@@ -2,137 +2,187 @@
 <html lang="fi">
 <head>
   <meta charset="UTF-8">
-  <title>Juho Heiska – Esimerkkisivu</title>
+  <title>Juho Heiska – Akkutohtori & Faktoihin pohjautuva politiikka</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Fonttien oletuksena esim. Montserrat / Open Sans / vastaava -->
+  
+  <!-- Fontti: Montserrat tai vastaava -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Väripaletiksi valittu murrettu vihreä tausta, pinkki otsikoille */
     :root {
-      --main-bg: #c6c6c6;       /* Primary dark color */
-      --primary-text: #2f2f2f;  /* White color */
-      --heading-pink: #464453;  /* Other color */
-      --subheading-green: #00a97f; /* Other color */
-      --footer-bg: #2f2f2f;     /* Primary dark color */
-      --footer-text: #c6c6c6;   /* White color */
-      --accent-line: #464453;   /* Other color */
-      --nav-text-color: #00a97f; /* Other color */
+      --main-bg: #fdfdfd;        /* päätausta */
+      --primary-text: #2f2f2f;   /* perus tekstiväri */
+      --accent-green: #00a97f;   /* vihreä korostus */
+      --dark-tone: #464453;      /* tumma sävy */
+      --nav-bg: #2f2f2f;         /* navigaatiopalkin tausta */
+      --nav-text: #ffffff;       /* navigaation teksti */
+      --hero-text: #ffffff;      /* heron pääteksti */
+      --overlay-bg: rgba(0,0,0,0.4); /* hero-kuvan tummennus */
+      --btn-bg: transparent;     /* nappien tausta hero-alueella */
+      --btn-border: #ffffff;     /* nappien reunan väri */
+      --footer-bg: #464453;      /* footerin tausta */
+      --footer-text: #fdfdfd;    /* footerin teksti */
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
       font-family: 'Montserrat', sans-serif;
       background: var(--main-bg);
       color: var(--primary-text);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    /* Yläheader */
+    /* Korostus-luokka vihreän tekstin esilletuomiseen */
+    .highlight {
+      color: var(--accent-green);
+      font-weight: 700;
+    }
+
+    /* Navigaatiopalkki */
     header {
+      background-color: var(--nav-bg);
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1rem 2rem;
-      background-color: #fff; /* Valkoinen yläpalkki */
-      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      align-items: center;
+      padding: 0.75rem 2rem;
     }
     .logo {
+      color: var(--nav-text);
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--nav-text-color);
+      text-decoration: none;
     }
     nav ul {
       list-style: none;
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem;
+    }
+    nav ul li {
+      display: inline-block;
     }
     nav a {
       text-decoration: none;
-      color: var(--nav-text-color);
+      color: var(--nav-text);
       font-weight: 600;
+      transition: opacity 0.2s ease;
     }
     nav a:hover {
       opacity: 0.8;
     }
 
-    /* Hero-osa (sivun yläosan esittely) */
+    /* Hero-osa kuvalla */
     .hero {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      background: url("https://via.placeholder.com/1920x1080?text=Taustakuva+energiasta") no-repeat center center/cover;
       display: flex;
-      flex-direction: row;
       align-items: center;
-      justify-content: space-between;
-      padding: 2rem;
-      max-width: 1200px;
-      margin: 2rem auto;
-    }
-    .hero-text {
-      flex: 1;
-      margin-right: 2rem;
-    }
-    .hero-text h1 {
-      font-size: 3rem;
-      color: var(--heading-pink);
-      margin-bottom: 0.5rem;
-    }
-    .hero-text h2 {
-      font-size: 1.5rem;
-      color: var(--subheading-green);
-      margin-bottom: 1rem;
-    }
-    .hero-text p {
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-    .hero-image {
-      flex: 1;
-      display: flex;
       justify-content: center;
-      align-items: center;
+      color: var(--hero-text);
     }
-    .hero-image img {
-      max-width: 300px;
-      border-radius: 8px;
-      object-fit: cover;
-      /* placeholder-tyyli: laita omat kuvasi tähän */
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--overlay-bg);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2; /* Ylikirjoittaa overlayn */
+      text-align: center;
+      max-width: 800px;
+      padding: 0 1rem;
+    }
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .hero-buttons a {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--btn-border);
+      background: var(--btn-bg);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+    .hero-buttons a:hover {
+      background: var(--btn-border);
+      color: var(--nav-bg);
     }
 
-    /* Blogiosio */
-    .blog-section {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 2rem;
+    /* Esittelyosiot */
+    .intro-section {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+      text-align: center;
     }
-    .blog-section h3 {
+    .intro-section h2 {
       font-size: 2rem;
-      margin-bottom: 0.25rem;
-    }
-    .section-divider {
-      width: 60px;
-      height: 4px;
-      background: var(--accent-line);
       margin-bottom: 1rem;
     }
-    .blog-section p.section-subtitle {
-      font-style: italic;
-      margin-bottom: 2rem;
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+      text-align: left;
+    }
+    .intro-item {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .intro-item h3 {
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    /* Blogi / Latest Insights */
+    .blog-section {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+    .blog-section h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
     }
     .blog-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 2rem;
+      margin-top: 2rem;
     }
     .blog-card {
-      background: #fafafa;
-      border: 1px solid #eee;
+      background: #fff;
       border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
       overflow: hidden;
       transition: box-shadow 0.3s ease;
     }
@@ -149,8 +199,7 @@
     }
     .blog-card h4 {
       margin-bottom: 0.5rem;
-      color: var(--heading-pink);
-      font-size: 1.25rem;
+      font-weight: 700;
     }
     .blog-card p {
       font-size: 0.9rem;
@@ -166,11 +215,11 @@
     footer {
       background-color: var(--footer-bg);
       color: var(--footer-text);
-      padding: 2rem;
-      margin-top: 2rem;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
     }
     .footer-container {
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -183,6 +232,7 @@
     }
     .footer-column ul {
       list-style: none;
+      margin-top: 0.5rem;
     }
     .footer-column li {
       margin-bottom: 0.5rem;
@@ -190,9 +240,10 @@
     .footer-column a {
       color: var(--footer-text);
       text-decoration: none;
+      transition: opacity 0.2s ease;
     }
     .footer-column a:hover {
-      text-decoration: underline;
+      opacity: 0.7;
     }
     .footer-bottom {
       text-align: center;
@@ -200,82 +251,114 @@
       font-size: 0.9rem;
     }
 
-    /* Yleinen responsiivisuus */
     @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
+      .hero-content h1 {
+        font-size: 2rem;
       }
-      .hero-text {
-        margin-right: 0;
-        margin-bottom: 2rem;
+      .hero-content p {
+        font-size: 1rem;
+      }
+      .intro-grid, .blog-grid {
+        grid-template-columns: 1fr;
       }
     }
+
   </style>
 </head>
-
 <body>
 
-  <!-- Yläpalkki -->
+  <!-- Navigaatiopalkki -->
   <header>
-    <div class="logo">LOGO / Juho</div>
+    <a href="#" class="logo">Juho Heiska</a>
     <nav>
       <ul>
-        <li><a href="#">Etusivu</a></li>
-        <li><a href="#">Blogi</a></li>
-        <li><a href="#">Mun tarina</a></li>
-        <li><a href="#">Yhteystiedot</a></li>
-        <li><a href="#">Kunta- ja aluevaalit</a></li>
+        <li><a href="#">About Juho</a></li>
+        <li><a href="#">Research & Development</a></li>
+        <li><a href="#">Policy Positions</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Interactive Tools</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Hero-osa (etusivun iso esittely) -->
+  <!-- Hero-osa taustakuvalla + tekstillä -->
   <section class="hero">
-    <div class="hero-text">
-      <h1>Juho Heiska</h1>
-      <h2>Tekniikan tohtori & perheenisä</h2>
-      <p>Moikka! Olen Juho, haluan tuoda faktoihin pohjautuvaa päätöksentekoa kunnalliseen politiikkaan. \n        Panostetaan kestävään talouteen ja järkevään energiapolitiikkaan – ei turhaan ideologiaan.</p>
-      <p>Kuulostaa mielenkiintoiselta? Lue alta blogikirjoituksiani tai ota yhteyttä!</p>
-    </div>
-    <div class="hero-image">
-      <!-- Laita tähän oma kuvasi tai placeholder-kuva. Esim. via placeholders: https://via.placeholder.com/300 -->
-      <img src="https://via.placeholder.com/300x400?text=Placeholder" alt="Kuva Juhosta">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Advocating <span class="highlight">Economic Responsibility</span></h1>
+      <p>Combining <span class="highlight">engineering expertise</span> with a commitment to sustainable solutions and entrepreneurship.</p>
+      <div class="hero-buttons">
+        <a href="#">Learn More</a>
+        <a href="#">Get Involved</a>
+      </div>
     </div>
   </section>
 
-  <!-- Blogiosio -->
+  <!-- Intro: Akkutohtori & Faktoihin pohjautuva politiikka -->
+  <section class="intro-section">
+    <h2>Meet Juho Heiska – “Akkutohtori” & Policy Advocate</h2>
+    <p>Juho Heiska is a passionate advocate for <span class="highlight">sustainable technology</span>, combining his engineering know-how 
+       with a focus on community empowerment. His mission is to foster economic responsibility while 
+       promoting environmental stewardship through innovative solutions.</p>
+
+    <div class="intro-grid" style="margin-top: 3rem;">
+      <div class="intro-item">
+        <h3>100+ Projects</h3>
+        <p>Successfully led over a hundred projects focusing on battery technologies, decarbonization, and 
+           local entrepreneurship.</p>
+      </div>
+      <div class="intro-item">
+        <h3>20 Years</h3>
+        <p>Experience in research, technology development and public policy – bridging the gap between 
+           lab results and real-world impact.</p>
+      </div>
+      <div class="intro-item">
+        <h3>5000+ People</h3>
+        <p>Initiatives have positively impacted thousands of citizens by generating job opportunities 
+           and supporting local industry growth.</p>
+      </div>
+      <div class="intro-item">
+        <h3>50 Awards</h3>
+        <p>Recognized for contributions to sustainable practices, technology innovation, and policy advocacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog / “Latest Insights” -osio -->
   <section class="blog-section">
-    <h3>Lue blogiani</h3>
-    <div class="section-divider"></div>
-    <p class="section-subtitle">Ajatuksia kestävämmästä huomisesta</p>
+    <h2>Latest Insights</h2>
+    <p style="text-align:center;">Explore our recent posts on sustainability and economic responsibility.</p>
 
     <div class="blog-grid">
       <!-- Kortti 1 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200" alt="Blogikuva 1">
+        <img src="https://via.placeholder.com/400x200?text=Battery+Technology" alt="Blogikuva 1">
         <div class="content">
-          <h4>Blogipostauksen otsikko</h4>
-          <p>Kuntatalous on säädettävä kestävälle tolalle ilman, että veronkorotukset uuvuttavat asukkaat. Lue lisää…</p>
-          <div class="date">tammi 25, 2025</div>
+          <h4>The Crucial Role of Battery Technology in Transportation</h4>
+          <p>Battery innovation is rapidly evolving, offering exciting possibilities for sustainable mobility.</p>
+          <div class="date">March 10, 2025</div>
         </div>
       </div>
+
       <!-- Kortti 2 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200" alt="Blogikuva 2">
+        <img src="https://via.placeholder.com/400x200?text=Local+Vitality" alt="Blogikuva 2">
         <div class="content">
-          <h4>Valtuuston kokouskuulumiset</h4>
-          <p>Keskustelua pienydinvoiman mahdollisuuksista. Mitä opimme, ja miten etenemme tästä?</p>
-          <div class="date">helmi 15, 2025</div>
+          <h4>Local Vitality & Economic Responsibility in the Green Energy Transition</h4>
+          <p>Communities play a vital role in developing green energy projects, fostering job creation 
+             and local growth.</p>
+          <div class="date">February 28, 2025</div>
         </div>
       </div>
+
       <!-- Kortti 3 -->
       <div class="blog-card">
-        <img src="https://via.placeholder.com/400x200" alt="Blogikuva 3">
+        <img src="https://via.placeholder.com/400x200?text=Policy+Advocacy" alt="Blogikuva 3">
         <div class="content">
-          <h4>Ilmastotoimet – polkuja tulevaan</h4>
-          <p>Ilmastonmuutosta ei torjuta pelkillä puheilla. Nyt tarvitaan konkreettisia tekoja myös kunnissa.</p>
-          <div class="date">maalis 5, 2025</div>
+          <h4>Policy Advocacy for Sustainable Battery Tech</h4>
+          <p>Effective policies are essential to drive innovation and the widespread adoption of 
+             battery technology.</p>
+          <div class="date">February 14, 2025</div>
         </div>
       </div>
     </div>
@@ -287,40 +370,44 @@
 
       <div class="footer-column">
         <h5>Juho Heiska</h5>
-        <p>Olen perheenisä ja tekniikan tohtori, joka haluaa luoda kestävää tulevaisuutta Seinäjoelle. Tervetuloa seuraamaan matkaani kohti järkevämpää politiikkaa!</p>
+        <p>Akkutohtori & Political Advocate. Pioneering economic responsibility, entrepreneurial freedom, 
+           and sustainable innovation.</p>
       </div>
 
       <div class="footer-column">
-        <h5>Linkit</h5>
+        <h5>Links</h5>
         <ul>
           <li><a href="https://x.com/Juuhonber" target="_blank">Twitter (X)</a></li>
           <li><a href="https://www.linkedin.com/in/juho-heiska-347216b6/" target="_blank">LinkedIn</a></li>
           <li><a href="https://ehdokaskone.yle.fi/4359/yhteenveto" target="_blank">YLE Ehdokaskone</a></li>
-          <li><a href="https://ehdokkaat.vaalit.almamedia.fi/ehdokas/6f99f079-e040b322-87c3c166-38b105d1" target="_blank">Alma Median vaalikone</a></li>
+          <li><a href="https://ehdokkaat.vaalit.almamedia.fi/ehdokas/6f99f079-e040b322-87c3c166-38b105d1" target="_blank">Alma Vaalikone</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h5>Sivustolinkit</h5>
+        <h5>Site Navigation</h5>
         <ul>
-          <li><a href="#">Etusivu</a></li>
-          <li><a href="#">Yhteystiedot</a></li>
-          <li><a href="#">Tavoiteohjelma</a></li>
+          <li><a href="#">About Juho</a></li>
+          <li><a href="#">Research & Dev</a></li>
+          <li><a href="#">Policy Positions</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Interactive Tools</a></li>
         </ul>
       </div>
 
       <div class="footer-column">
-        <h5>Uusimmat artikkelit</h5>
+        <h5>Contact</h5>
         <ul>
-          <li><a href="#">Olen ehdolla kunta- ja aluevaaleissa</a></li>
-          <li><a href="#">Valtuuston talousarviokokouksesta</a></li>
-          <li><a href="#">Euroopan unionin perusarvot</a></li>
+          <li><a href="#">Send a Message</a></li>
+          <li><a href="#">Media Inquiries</a></li>
+          <li><a href="#">Support Juho</a></li>
         </ul>
       </div>
 
     </div>
+
     <div class="footer-bottom">
-      © 2025 Juho Heiska | Sivuston hallinta
+      © 2025 Juho Heiska – All rights reserved. | Terms | Privacy
     </div>
   </footer>
 
